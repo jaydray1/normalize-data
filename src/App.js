@@ -246,10 +246,20 @@ const skuGroupSort = (arr) => {
   return thisList;
 };
 
+const addNewSkuGroup = (normalObject, sortArray) => {
+  console.log(normalObject);
+  const newId = sortArray.at(-1) + 1;
+  normalObject[newId] = { skus: [{}] };
+  return normalObject;
+};
+
 export default function App() {
   React.useEffect(() => {
     console.log(normalizeSkuGroups(skuGroups));
     console.log(skuGroupSort(skuGroups));
+    console.log(
+      addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
+    );
   }, []);
   return (
     <div className="App">
