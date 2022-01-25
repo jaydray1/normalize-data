@@ -1,6 +1,7 @@
 import "./styles.css";
 import { normalize, schema } from "normalizr";
-import React from "react";
+import * as React from "react";
+import { omit } from "lodash";
 
 const skuGroups = [
   {
@@ -35,6 +36,12 @@ const skuGroups = [
           {
             name: "Color",
             value: "Orange",
+            type: "Static"
+          },
+          // added here to test properties reduction
+          {
+            name: "Finish",
+            value: "Yellow",
             type: "Static"
           }
         ],
@@ -231,11 +238,26 @@ const skuGroups = [
 const normalizeSkuGroups = (arr) => {
   const normal = arr.reduce((acc, curr) => {
     const newSkus = curr.skus.reduce((acc, curr) => {
-      return { ...acc, [curr.skuId]: { ...curr } };
+      const newProperties = curr.properties.reduce((acc, curr) => {
+        return { ...acc, [curr.name]: { ...curr } };
+      }, {});
+      return {
+        ...acc,
+        [curr.skuId]: { ...curr, properties: { ...newProperties } }
+      };
     }, {});
+
+    // const newSkuProperties = newSkus.reduce((acc, curr) => {
+    //   return { ...acc, [curr.properties.name]: { ...curr.properties }}
+    // }, {})
+
+    // const newSkuProperties = curr.skus.properties.reduce((acc, curr) => {
+    //   return { ...acc, [curr.name]: { ...curr } }
+    // }, {})
 
     return { ...acc, [curr.skuGroupId]: { ...curr, skus: { ...newSkus } } };
   }, {});
+
   return normal;
 };
 
@@ -253,13 +275,21 @@ const addNewSkuGroup = (normalObject, sortArray) => {
   return normalObject;
 };
 
+const deleteSkuGroup = (newObj, deletedId) => {
+  const newSkuWithDeleted = omit(newObj, [deletedId]);
+  return newSkuWithDeleted;
+};
+
 export default function App() {
+  const [normalizedSkuObject, setNormalizedSkuObject] = React.useState();
   React.useEffect(() => {
-    console.log(normalizeSkuGroups(skuGroups));
+    // console.log(normalizeSkuGroups(skuGroups));
+    setNormalizedSkuObject(skuGroups);
     console.log(skuGroupSort(skuGroups));
     console.log(
       addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
     );
+    // console.log(deleteSkuGroup(normalizeSkuGroups(skuGroups), 4312));
   }, []);
   return (
     <div className="App">
