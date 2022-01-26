@@ -1,11 +1,11 @@
 import "./styles.css";
 import { normalize, schema } from "normalizr";
 import * as React from "react";
-import { omit } from "lodash";
+import { omit, sortBy } from "lodash";
 
 const skuGroups = [
   {
-    skuGroupId: 4310,
+    skuGroupId: 4312,
     productId: 4347,
     skuIds: [28938, 28939, 28940],
     skus: [
@@ -91,7 +91,7 @@ const skuGroups = [
     ]
   },
   {
-    skuGroupId: 4311,
+    skuGroupId: 4310,
     productId: 4347,
     skuIds: [28941, 28942],
     skus: [
@@ -150,7 +150,7 @@ const skuGroups = [
     ]
   },
   {
-    skuGroupId: 4312,
+    skuGroupId: 4311,
     productId: 4347,
     skuIds: [28943, 28944, 28945],
     skus: [
@@ -263,7 +263,7 @@ const normalizeSkuGroups = (arr) => {
 
 const skuGroupSort = (arr) => {
   const thisList = arr.reduce((acc, curr) => {
-    return [...acc, curr.skuGroupId];
+    return [...acc, curr.skuGroupId].sort((a, b) => a - b);
   }, []);
   return thisList;
 };
@@ -282,10 +282,11 @@ const deleteSkuGroup = (newObj, deletedId) => {
 
 export default function App() {
   const [normalizedSkuObject, setNormalizedSkuObject] = React.useState();
+  const [listSorted, setListSorted] = React.useState();
+
   React.useEffect(() => {
-    // console.log(normalizeSkuGroups(skuGroups));
     setNormalizedSkuObject(skuGroups);
-    console.log(skuGroupSort(skuGroups));
+    setListSorted(skuGroupSort(skuGroups));
     console.log(
       addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
     );
@@ -295,6 +296,15 @@ export default function App() {
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
+      <div>
+        {Object.values(normalizedSkuObject)
+          .sortBy(objectToCollection, (item) =>
+            listSorted.indexOf(item.skuGroupId)
+          )
+          .map((item) => (
+            <p>{item.skuGroupId}</p>
+          ))}
+      </div>
     </div>
   );
 }
