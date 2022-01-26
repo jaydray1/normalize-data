@@ -283,6 +283,7 @@ const deleteSkuGroup = (newObj, deletedId) => {
 export default function App() {
   const [normalizedSkuObject, setNormalizedSkuObject] = React.useState();
   const [listSorted, setListSorted] = React.useState();
+  const [fresh, setFresh] = React.useState();
 
   React.useEffect(() => {
     setNormalizedSkuObject(skuGroups);
@@ -292,18 +293,22 @@ export default function App() {
     );
     // console.log(deleteSkuGroup(normalizeSkuGroups(skuGroups), 4312));
   }, []);
+
+  React.useEffect(() => {
+    if (normalizedSkuObject) {
+      const toReturn = sortBy(Object.values(normalizedSkuObject), (item) =>
+        listSorted.indexOf(item.skuGroupId)
+      );
+      setFresh(toReturn);
+    }
+  }, [normalizedSkuObject, listSorted]);
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
       <div>
-        {Object.values(normalizedSkuObject)
-          .sortBy(objectToCollection, (item) =>
-            listSorted.indexOf(item.skuGroupId)
-          )
-          .map((item) => (
-            <p>{item.skuGroupId}</p>
-          ))}
+        {fresh &&
+          fresh.map((item) => <p key={item.skuGroupId}>{item.skuGroupId}</p>)}
       </div>
     </div>
   );
