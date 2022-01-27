@@ -286,7 +286,7 @@ export default function App() {
   const [fresh, setFresh] = React.useState();
 
   React.useEffect(() => {
-    setNormalizedSkuObject(skuGroups);
+    setNormalizedSkuObject(normalizeSkuGroups(skuGroups));
     setListSorted(skuGroupSort(skuGroups));
     console.log(
       addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
@@ -302,10 +302,14 @@ export default function App() {
       setFresh(toReturn);
     }
   }, [normalizedSkuObject, listSorted]);
+
   return (
     <div className="App">
       <h1>Hello CodeSandbox</h1>
       <h2>Start editing to see some magic happen!</h2>
+      <h1>
+        {normalizedSkuObject && normalizedSkuObject["4310"].skus["28941"].skuId}
+      </h1>
       <div>
         {fresh &&
           fresh.map((item) => <p key={item.skuGroupId}>{item.skuGroupId}</p>)}
