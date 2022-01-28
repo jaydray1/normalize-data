@@ -231,6 +231,55 @@ const skuGroups = [
   }
 ];
 
+const testSkus = {
+  28941: {
+    skuId: 28941,
+    properties: [
+      {
+        name: "Design",
+        value: "Bold",
+        type: "Static"
+      }
+    ],
+    tags: [],
+    code: "bld",
+    sellerId: 0,
+    price: 0.0,
+    comparisonPrice: 0.0,
+    weight: 0.0,
+    weightUnit: null,
+    isActive: false,
+    createdDate: "2021-10-25T14:55:11.354419+00:00",
+    skuImages: [],
+    skuInventories: null
+  },
+  28942: {
+    skuId: 28942,
+    properties: [
+      {
+        name: "Design",
+        value: "Cliche",
+        type: "Static"
+      }
+    ],
+    tags: [],
+    code: "clch",
+    sellerId: 0,
+    price: 0.0,
+    comparisonPrice: 0.0,
+    weight: 0.0,
+    weightUnit: null,
+    isActive: false,
+    createdDate: "2021-10-25T14:55:11.354419+00:00",
+    skuImages: [],
+    skuInventories: null
+  }
+};
+
+const checkProperties = (skusObj) => {
+  return Object.values(skusObj).some((sku) => sku.properties.length > 1);
+};
+
 // skuGroupsById
 // skusById
 // skuGroupIds
@@ -288,9 +337,9 @@ export default function App() {
   React.useEffect(() => {
     setNormalizedSkuObject(normalizeSkuGroups(skuGroups));
     setListSorted(skuGroupSort(skuGroups));
-    console.log(
-      addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
-    );
+    // console.log(
+    //   addNewSkuGroup(normalizeSkuGroups(skuGroups), skuGroupSort(skuGroups))
+    // );
     // console.log(deleteSkuGroup(normalizeSkuGroups(skuGroups), 4312));
   }, []);
 
@@ -301,6 +350,8 @@ export default function App() {
       );
       setFresh(toReturn);
     }
+
+    console.log(checkProperties(testSkus));
   }, [normalizedSkuObject, listSorted]);
 
   return (
