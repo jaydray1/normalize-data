@@ -296,14 +296,6 @@ const normalizeSkuGroups = (arr) => {
       };
     }, {});
 
-    // const newSkuProperties = newSkus.reduce((acc, curr) => {
-    //   return { ...acc, [curr.properties.name]: { ...curr.properties }}
-    // }, {})
-
-    // const newSkuProperties = curr.skus.properties.reduce((acc, curr) => {
-    //   return { ...acc, [curr.name]: { ...curr } }
-    // }, {})
-
     return { ...acc, [curr.skuGroupId]: { ...curr, skus: { ...newSkus } } };
   }, {});
 
